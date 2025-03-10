@@ -2,6 +2,8 @@ const calculatorContainer = document.querySelector("#calculator-container");
 const displayInput = document.querySelector("#display-input");
 const buttonContainer = document.querySelector("#button-container");
 
+displayInput.textContent = "5+5=10";
+
 const buttonArray = [
     {text: 'AC'}, {text: 'DEL'}, {text: '%'}, {text: '+'},
     {text: '7'}, {text: '8'}, {text: '9'}, {text: '-'},
@@ -20,6 +22,10 @@ buttonArray.forEach(item => {
     }
     buttonContainer.appendChild(btn);
 })
+
+const operator = ['+', '-', '*', '/'];
+
+
 
 function add (a, b) {
     return a + b;
