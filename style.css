@@ -41,7 +41,10 @@ body {
     transition-duration: 0.4s;
     cursor: pointer;
     font-size: 20px;
-
 }
 
 .button-style:hover {background-color: #e7e7e7;}
+
+.wide {
+    flex: 2; /*spans 2 flex units compared to normal buttons*/
+}
