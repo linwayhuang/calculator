@@ -1,0 +1,47 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+#calculator-container {
+    margin-top: 150px;
+    width: 300px;
+    height: 500px;
+    border-radius: 20px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#display-input {
+    margin-top: 20px;
+    width: 280px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+#button-container {
+    margin-top: 15px;
+    width: 300px;
+    height: 345px;
+    background-color: red;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around; /* align-content allows to use the "space-around"*/
+}
+
+.button-style {
+    height: 20%;/* 20% of flex container's height*/
+    flex: 0 0 25%; /*25% of flex container's width, no grow/shrink*/
+    border-style: none;
+    border: 1px solid #aaa;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-size: 20px;
+
+}
+
+.button-style:hover {background-color: #e7e7e7;}
