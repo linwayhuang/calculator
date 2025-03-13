@@ -2,11 +2,16 @@ const calculatorContainer = document.querySelector("#calculator-container");
 const displayInput = document.querySelector("#display-input");
 const buttonContainer = document.querySelector("#button-container");
 
+let currentOperand = '';
+let previousOperand = '';
+let currentOperator = '';
+
+
 const buttonArray = [
-    {text: 'AC'}, {text: 'DEL'}, {text: '%'}, {text: '+'},
-    {text: '7'}, {text: '8'}, {text: '9'}, {text: '-'},
-    {text: '4'}, {text: '5'}, {text: '6'}, {text: '*'},
-    {text: '1'}, {text: '2'}, {text: '3'}, {text: '/'},
+    {text: 'AC'}, {text: 'DEL'}, {text: '%'}, {text: '+',},
+    {text: '7', classes: 'numb'}, {text: '8', classes: 'numb'}, {text: '9', classes: 'numb'}, {text: '-'},
+    {text: '4', classes: 'numb'}, {text: '5', classes: 'numb'}, {text: '6', classes: 'numb'}, {text: '*'},
+    {text: '1', classes: 'numb'}, {text: '2', classes: 'numb'}, {text: '3', classes: 'numb'}, {text: '/'},
     {text: '0', classes: 'wide'}, {text: '.'}, {text: '='},
 ];
 
@@ -21,17 +26,17 @@ buttonArray.forEach(item => {
     buttonContainer.appendChild(btn);
 })
 
-const operator = [buttonArray[4], buttonArray[8], buttonArray[12], buttonArray[16]];
-
 buttonContainer.addEventListener('click', event => {
     let target = event.target;
+    const val = target.textContent; /*Assign text content from the button*/
 
-    if (target.classList.contains('button-style')) {
-        const val = target.textContent; /*Assign text content from the button*/
-
-        console.log(target);
-
+    if (typeof target.textContent == 'number') { /*will check for class name target.classList.contains('button-style')*/
         displayInput.textContent += val;
+        currentOperand += val;
+    } else if (target.textContent === '+' || target.textContent === '-' || target.textContent === '*' ||target.textContent === '/') {
+        currentOperator = val;
+        previousOperand = currentOperand;
+        currentOperand = '';
     }
 })
 
