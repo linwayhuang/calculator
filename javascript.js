@@ -8,10 +8,10 @@ let currentOperator = '';
 
 
 const buttonArray = [
-    {text: 'AC'}, {text: 'DEL'}, {text: '%'}, {text: '+',},
-    {text: '7', classes: 'numb'}, {text: '8', classes: 'numb'}, {text: '9', classes: 'numb'}, {text: '-'},
-    {text: '4', classes: 'numb'}, {text: '5', classes: 'numb'}, {text: '6', classes: 'numb'}, {text: '*'},
-    {text: '1', classes: 'numb'}, {text: '2', classes: 'numb'}, {text: '3', classes: 'numb'}, {text: '/'},
+    {text: 'AC'}, {text: 'DEL'}, {text: '%'}, {text: '+', classes: 'operator'},
+    {text: '7', classes: 'numb'}, {text: '8', classes: 'numb'}, {text: '9', classes: 'numb'}, {text: '-', classes: 'operator'},
+    {text: '4', classes: 'numb'}, {text: '5', classes: 'numb'}, {text: '6', classes: 'numb'}, {text: '*', classes: 'operator'},
+    {text: '1', classes: 'numb'}, {text: '2', classes: 'numb'}, {text: '3', classes: 'numb'}, {text: '/', classes: 'operator'},
     {text: '0', classes: 'wide'}, {text: '.'}, {text: '='},
 ];
 
@@ -30,10 +30,13 @@ buttonContainer.addEventListener('click', event => {
     let target = event.target;
     const val = target.textContent; /*Assign text content from the button*/
 
-    if (typeof target.textContent == 'number') { /*will check for class name target.classList.contains('button-style')*/
+    if (target.classList.contains('numb')) { /*will check for class name target.classList.contains('button-style')*/
+        if (currentOperand === '') {
+            displayInput.textContent = '';
+        }
         displayInput.textContent += val;
         currentOperand += val;
-    } else if (target.textContent === '+' || target.textContent === '-' || target.textContent === '*' ||target.textContent === '/') {
+    } else if (target.classList.contains('operator')) {
         currentOperator = val;
         previousOperand = currentOperand;
         currentOperand = '';
