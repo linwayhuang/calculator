@@ -12,7 +12,7 @@ const buttonArray = [
     {text: '7', classes: 'numb'}, {text: '8', classes: 'numb'}, {text: '9', classes: 'numb'}, {text: '-', classes: 'operator'},
     {text: '4', classes: 'numb'}, {text: '5', classes: 'numb'}, {text: '6', classes: 'numb'}, {text: '*', classes: 'operator'},
     {text: '1', classes: 'numb'}, {text: '2', classes: 'numb'}, {text: '3', classes: 'numb'}, {text: '/', classes: 'operator'},
-    {text: '0', classes: 'wide'}, {text: '.'}, {text: '='},
+    {text: '0', classes: 'wide numb'}, {text: '.'}, {text: '=', classes: 'equator'},
 ];
 
 buttonArray.forEach(item => {
@@ -40,6 +40,13 @@ buttonContainer.addEventListener('click', event => {
         currentOperator = val;
         previousOperand = currentOperand;
         currentOperand = '';
+    } else if (target.classList.contains('equator')) {
+        if (previousOperand && currentOperand) {
+            let result = operate(Number(previousOperand), Number(currentOperand), currentOperator);
+            console.log(result);
+            displayInput.textContent = result;
+            currentOperand = result;
+        }
     }
 })
 
@@ -55,4 +62,10 @@ function multiply (a, b) {
 }
 function divide (a, b) {
     return a / b;
+}
+function operate (a, b, sign) {
+    if (sign === '+') return add(a, b);
+    else if (sign === '-') return subtract(a, b);
+    else if (sign === '*') return multiply(a, b);
+    else if (sign === '/') return divide(a, b);
 }
