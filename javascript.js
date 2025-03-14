@@ -8,11 +8,11 @@ let currentOperator = '';
 
 
 const buttonArray = [
-    {text: 'AC'}, {text: 'DEL'}, {text: '%'}, {text: '+', classes: 'operator'},
+    {text: 'AC', classes: 'clear'}, {text: 'DEL', classes: 'delete'}, {text: '%', classes: 'percent'}, {text: '+', classes: 'operator'},
     {text: '7', classes: 'numb'}, {text: '8', classes: 'numb'}, {text: '9', classes: 'numb'}, {text: '-', classes: 'operator'},
     {text: '4', classes: 'numb'}, {text: '5', classes: 'numb'}, {text: '6', classes: 'numb'}, {text: '*', classes: 'operator'},
     {text: '1', classes: 'numb'}, {text: '2', classes: 'numb'}, {text: '3', classes: 'numb'}, {text: '/', classes: 'operator'},
-    {text: '0', classes: 'wide numb'}, {text: '.'}, {text: '=', classes: 'equator'},
+    {text: '0', classes: 'wide numb'}, {text: '.', classes: 'dot'}, {text: '=', classes: 'equator'}, /*You can add two classes for the 0 button*/
 ];
 
 buttonArray.forEach(item => {
@@ -36,6 +36,9 @@ buttonContainer.addEventListener('click', event => {
         }
         displayInput.textContent += val;
         currentOperand += val;
+    } else if (target.classList.contains('dot') && !displayInput.textContent.includes('.')) { /* Make sure the decimal only shows up one time in the number string */
+        displayInput.textContent += val;
+        currentOperand += val;
     } else if (target.classList.contains('operator')) {
         currentOperator = val;
         previousOperand = currentOperand;
@@ -43,10 +46,15 @@ buttonContainer.addEventListener('click', event => {
     } else if (target.classList.contains('equator')) {
         if (previousOperand && currentOperand) {
             let result = operate(Number(previousOperand), Number(currentOperand), currentOperator);
-            console.log(result);
             displayInput.textContent = result;
             currentOperand = result;
         }
+    } else if (target.classList.contains('delete')) { /* Remove the last character */
+        displayInput.textContent = displayInput.textContent.slice(0, -1);
+        currentOperand = currentOperand.slice(0, -1);
+    } else if (target.classList.contains('clear')) { /* Clear all character */
+        displayInput.textContent = '';
+        currentOperand = '';
     }
 })
 
