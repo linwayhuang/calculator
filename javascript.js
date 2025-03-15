@@ -30,13 +30,16 @@ buttonContainer.addEventListener('click', event => {
     let target = event.target;
     const val = target.textContent; /*Assign text content from the button*/
 
-    if (target.classList.contains('numb')) { /*will check for class name target.classList.contains('button-style')*/
+    if (target.classList.contains('numb') && !currentOperand.includes('%')) { /* will check for class name target.classList.contains('button-style')*/
         if (currentOperand === '') {
             displayInput.textContent = '';
         }
         displayInput.textContent += val;
         currentOperand += val;
-    } else if (target.classList.contains('dot') && !displayInput.textContent.includes('.')) { /* Make sure the decimal only shows up one time in the number string */
+    } else if (target.classList.contains('dot') && !displayInput.textContent.includes('.') && !currentOperand.includes('%')) { /* Make sure the decimal only shows up one time in the number string */
+        displayInput.textContent += val;
+        currentOperand += val;
+    } else if (target.classList.contains('percent') && !currentOperand.includes('%')) {
         displayInput.textContent += val;
         currentOperand += val;
     } else if (target.classList.contains('operator')) {
@@ -45,9 +48,17 @@ buttonContainer.addEventListener('click', event => {
         currentOperand = '';
     } else if (target.classList.contains('equator')) {
         if (previousOperand && currentOperand) {
+            if (previousOperand.includes('%')) {
+                previousOperand = (Number(previousOperand.slice(0, -1)) / 100);
+                console.log(previousOperand);
+            }
+            if (currentOperand.includes('%')) {
+                currentOperand = (Number(currentOperand.slice(0, -1)) / 100);
+                console.log(currentOperand);
+            }
             let result = operate(Number(previousOperand), Number(currentOperand), currentOperator);
-            displayInput.textContent = result;
-            currentOperand = result;
+            displayInput.textContent = result.toString();
+            currentOperand = result.toString();
         }
     } else if (target.classList.contains('delete')) { /* Remove the last character */
         displayInput.textContent = displayInput.textContent.slice(0, -1);
