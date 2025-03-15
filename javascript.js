@@ -2,10 +2,9 @@ const calculatorContainer = document.querySelector("#calculator-container");
 const displayInput = document.querySelector("#display-input");
 const buttonContainer = document.querySelector("#button-container");
 
-let currentOperand = '';
-let previousOperand = '';
-let currentOperator = '';
-
+let currentOperand = ''
+    , previousOperand = ''
+    , currentOperator = '';
 
 const buttonArray = [
     {text: 'AC', classes: 'clear'}, {text: 'DEL', classes: 'delete'}, {text: '%', classes: 'percent'}, {text: '+', classes: 'operator'},
@@ -26,46 +25,54 @@ buttonArray.forEach(item => {
     buttonContainer.appendChild(btn);
 })
 
+const dot = document.querySelector('.dot');
+const percent = document.querySelector('.percent');
+
 buttonContainer.addEventListener('click', event => {
     let target = event.target;
     const val = target.textContent; /*Assign text content from the button*/
 
-    if (target.classList.contains('numb') && !currentOperand.includes('%')) { /* will check for class name target.classList.contains('button-style')*/
+    if (target.classList.contains('numb')) { /* will check for class name target.classList.contains('button-style')*/
         if (currentOperand === '') {
             displayInput.textContent = '';
         }
         displayInput.textContent += val;
         currentOperand += val;
-    } else if (target.classList.contains('dot') && !displayInput.textContent.includes('.') && !currentOperand.includes('%')) { /* Make sure the decimal only shows up one time in the number string */
+    } else if (target.classList.contains('dot') && !currentOperand.includes('%')) { /* Make sure the decimal only shows up one time in the number string */
         displayInput.textContent += val;
         currentOperand += val;
-    } else if (target.classList.contains('percent') && !currentOperand.includes('%')) {
+        dot.disabled = true;
+    } else if (target.classList.contains('percent')) {
         displayInput.textContent += val;
         currentOperand += val;
+        percent.disabled = true;
     } else if (target.classList.contains('operator')) {
-        currentOperator = val;
-        previousOperand = currentOperand;
-        currentOperand = '';
+        currentOperator = val
+        , previousOperand = currentOperand
+        , currentOperand = '';
+        dot.disabled = false;
+        percent.disabled = false;
     } else if (target.classList.contains('equator')) {
         if (previousOperand && currentOperand) {
             if (previousOperand.includes('%')) {
-                previousOperand = (Number(previousOperand.slice(0, -1)) / 100);
-                console.log(previousOperand);
+                previousOperand = (Number(previousOperand.slice(0, -1)) / 100); /* Convert percentage to number */
             }
             if (currentOperand.includes('%')) {
                 currentOperand = (Number(currentOperand.slice(0, -1)) / 100);
-                console.log(currentOperand);
             }
-            let result = operate(Number(previousOperand), Number(currentOperand), currentOperator);
-            displayInput.textContent = result.toString();
+            let result = operate(Number(previousOperand), Number(currentOperand), currentOperator); /* The result here is a number */
+            displayInput.textContent = result.toString(); /* Convert back to string to use the percentage check */
             currentOperand = result.toString();
+            dot.disabled = false;
+            percent.disabled = false;
         }
     } else if (target.classList.contains('delete')) { /* Remove the last character */
         displayInput.textContent = displayInput.textContent.slice(0, -1);
         currentOperand = currentOperand.slice(0, -1);
     } else if (target.classList.contains('clear')) { /* Clear all character */
-        displayInput.textContent = '';
-        currentOperand = '';
+        displayInput.textContent = ''
+        , currentOperand = ''
+        , previousOperand = '';
     }
 })
 
