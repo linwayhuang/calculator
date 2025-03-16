@@ -34,7 +34,7 @@ buttonContainer.addEventListener('click', event => {
 
     if (target.classList.contains('numb') && (currentOperand.length <= 9)) { /* will check for class name target.classList.contains('button-style')*/
         if (currentOperand === '') {
-            displayInput.textContent = '';
+            displayInput.textContent = ''; /* Clear display after calculation and input a new number */
         }
         displayInput.textContent += val;
         currentOperand += val;
@@ -44,17 +44,17 @@ buttonContainer.addEventListener('click', event => {
                     and make sure the dot doesn't appear when the display still has a dot after calculation*/
         displayInput.textContent += val;
         currentOperand += val;
-        dot.disabled = true;
+        dot.disabled = true; /* Disable dot button after clicking it */
     } else if (target.classList.contains('percent')) {
         displayInput.textContent += val;
         currentOperand += val;
-        percent.disabled = true;
+        percent.disabled = true; /* Disable percent button after clicking it */
     } else if (target.classList.contains('operator')) {
         currentOperator = val
         , previousOperand = currentOperand
         , currentOperand = '';
-        dot.disabled = false;
-        percent.disabled = false;
+        dot.disabled = false; /* Enable dot button */
+        percent.disabled = false; /* Enable percent button */
     } else if (target.classList.contains('equator')) {
         if (previousOperand && currentOperand) {
             if (previousOperand.includes('%')) {
@@ -63,10 +63,12 @@ buttonContainer.addEventListener('click', event => {
             if (currentOperand.includes('%')) {
                 currentOperand = (Number(currentOperand.slice(0, -1)) / 100);
             }
-            let result = roundToMaxDeximal(operate(Number(previousOperand), Number(currentOperand), currentOperator),8); /* The result here is a number */
-            displayInput.textContent = result.toString(); /* Convert back to string to use the percentage check */
-            previousOperand = result.toString();
-            currentOperand = '';
+            let result = roundToMaxDeximal(operate(Number(previousOperand), Number(currentOperand), currentOperator),8); 
+            /* The result here is a number */
+            displayInput.textContent = result.toString(); /* Convert back to string to use the percentage check for
+            the dot button*/
+            previousOperand = result.toString(); 
+            currentOperand = ''; /* Reset currentOperand to start a next calculation set */
             dot.disabled = false;
             percent.disabled = false;
         }
@@ -79,7 +81,6 @@ buttonContainer.addEventListener('click', event => {
         , previousOperand = '';
     }
 })
-
 
 function add (a, b) {
     return a + b;
@@ -103,9 +104,4 @@ function operate (a, b, sign) {
 function roundToMaxDeximal (number, maxDecimals) {
     const multipler = Math.pow(10, maxDecimals);
     return Math.round(number * multipler) / multipler;
-}
-
-function countDecimals(num) {
-    // if (Math.floor(num) === num) return 0;
-    return num.split('.')[1].length || 0;
 }
