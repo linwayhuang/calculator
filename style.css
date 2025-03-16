@@ -39,7 +39,7 @@ body {
 
 .button-style {
     height: 20%;/* 20% of flex container's height*/
-    flex: 0 0 25%; /*25% of flex container's width, no grow/shrink*/
+    flex: 0 0 25%; /* 25% of flex container's width, no grow/shrink */
     border-style: none;
     border: 1px solid #aaa;
     transition-duration: 0.4s;
@@ -49,6 +49,18 @@ body {
 }
 
 .button-style:hover {background-color: #e7e7e7;}
+
+.numb, .dot {
+    background-color: #217C7E;
+}
+
+.operator, .equator {
+    background-color: #FF8F1F;
+}
+
+.clear, .delete, .percent {
+    background-color: dodgerblue;
+}
 
 .wide {
     flex: 2; /*spans 2 flex units compared to normal buttons*/
