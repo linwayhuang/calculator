@@ -18,27 +18,30 @@ buttonArray.forEach(item => {
     const btn = document.createElement("button");
     btn.classList.add("button-style");
     btn.textContent = item.text;
-    /*If we specified extra classes*/
+    /* If we specified extra classes */
     if (item.classes) {
-        item.classes.split(" ").forEach(cls => btn.classList.add(cls));
+        item.classes.split(" ").forEach(cls => btn.classList.add(cls)); /* Add multiple classes this way */
     }
     buttonContainer.appendChild(btn);
 })
 
-const dot = document.querySelector('.dot');
+const dot = document.querySelector('.dot'); /* Add variables to use the disabled buttons later */
 const percent = document.querySelector('.percent');
 
 buttonContainer.addEventListener('click', event => {
     let target = event.target;
-    const val = target.textContent; /*Assign text content from the button*/
+    const val = target.textContent; /* Assign text content from the button */
 
-    if (target.classList.contains('numb')) { /* will check for class name target.classList.contains('button-style')*/
+    if (target.classList.contains('numb') && (currentOperand.length <= 9)) { /* will check for class name target.classList.contains('button-style')*/
         if (currentOperand === '') {
             displayInput.textContent = '';
         }
         displayInput.textContent += val;
         currentOperand += val;
-    } else if (target.classList.contains('dot') && !currentOperand.includes('%')) { /* Make sure the decimal only shows up one time in the number string */
+    } else if (target.classList.contains('dot') 
+                && !currentOperand.includes('%') 
+                && !displayInput.textContent.includes('.')) { /* Make sure the dot don't appear after percent 
+                    and make sure the dot doesn't appear when the display still has a dot after calculation*/
         displayInput.textContent += val;
         currentOperand += val;
         dot.disabled = true;
@@ -60,9 +63,10 @@ buttonContainer.addEventListener('click', event => {
             if (currentOperand.includes('%')) {
                 currentOperand = (Number(currentOperand.slice(0, -1)) / 100);
             }
-            let result = operate(Number(previousOperand), Number(currentOperand), currentOperator); /* The result here is a number */
+            let result = roundToMaxDeximal(operate(Number(previousOperand), Number(currentOperand), currentOperator),8); /* The result here is a number */
             displayInput.textContent = result.toString(); /* Convert back to string to use the percentage check */
-            currentOperand = result.toString();
+            previousOperand = result.toString();
+            currentOperand = '';
             dot.disabled = false;
             percent.disabled = false;
         }
@@ -94,4 +98,14 @@ function operate (a, b, sign) {
     else if (sign === '-') return subtract(a, b);
     else if (sign === '*') return multiply(a, b);
     else if (sign === '/') return divide(a, b);
+}
+
+function roundToMaxDeximal (number, maxDecimals) {
+    const multipler = Math.pow(10, maxDecimals);
+    return Math.round(number * multipler) / multipler;
+}
+
+function countDecimals(num) {
+    // if (Math.floor(num) === num) return 0;
+    return num.split('.')[1].length || 0;
 }
