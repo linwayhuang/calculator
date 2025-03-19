@@ -82,6 +82,58 @@ buttonContainer.addEventListener('click', event => {
     }
 })
 
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    
+    if (!isNaN(key) && key !== ' ' && (currentOperand.length <= 9)) {
+        if (currentOperand === '') {
+            displayInput.textContent = ''; /* Clear display after calculation and input a new number */
+        }
+        displayInput.textContent += key;
+        currentOperand += key;
+    } else if (key === '.'
+        && !currentOperand.includes('%') 
+        && !displayInput.textContent.includes('.')) {
+        displayInput.textContent += key;
+        currentOperand += key;
+        dot.disabled = true;
+    } else if (key === '%') {
+        displayInput.textContent += key;
+        currentOperand += key;
+        percent.disabled = true;
+    } else if (['+', '-', '*', '/'].includes(key)) {
+        currentOperator = key
+        , previousOperand = currentOperand
+        , currentOperand = '';
+        dot.disabled = false; /* Enable dot button */
+        percent.disabled = false;
+    } else if (key === 'Enter') {
+        if (previousOperand && currentOperand) {
+            if (previousOperand.includes('%')) {
+                previousOperand = (Number(previousOperand.slice(0, -1)) / 100); /* Convert percentage to number */
+            }
+            if (currentOperand.includes('%')) {
+                currentOperand = (Number(currentOperand.slice(0, -1)) / 100);
+            }
+            let result = roundToMaxDeximal(operate(Number(previousOperand), Number(currentOperand), currentOperator),8); 
+            /* The result here is a number */
+            displayInput.textContent = result.toString(); /* Convert back to string to use the percentage check for
+            the dot button*/
+            previousOperand = result.toString(); 
+            currentOperand = ''; /* Reset currentOperand to start a next calculation set */
+            dot.disabled = false;
+            percent.disabled = false;
+        }
+    } else if (key === 'Backspace') { /* Remove the last character */
+        displayInput.textContent = displayInput.textContent.slice(0, -1);
+        currentOperand = currentOperand.slice(0, -1);
+    } else if (key === 'Escape') { /* Clear all character */
+        displayInput.textContent = ''
+        , currentOperand = ''
+        , previousOperand = '';
+    }
+})
+
 function add (a, b) {
     return a + b;
 }
