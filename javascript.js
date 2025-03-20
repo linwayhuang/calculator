@@ -73,12 +73,19 @@ buttonContainer.addEventListener('click', event => {
             percent.disabled = false;
         }
     } else if (target.classList.contains('delete')) { /* Remove the last character */
+        if (currentOperand.slice(-1) == '.') {
+            dot.disabled = false;
+        } else if (currentOperand.slice(-1) == '%') {
+            percent.disabled = false;
+        }
         displayInput.textContent = displayInput.textContent.slice(0, -1);
         currentOperand = currentOperand.slice(0, -1);
     } else if (target.classList.contains('clear')) { /* Clear all character */
         displayInput.textContent = ''
         , currentOperand = ''
         , previousOperand = '';
+        dot.disabled = false;
+        percent.disabled = false;
     }
 })
 
@@ -125,12 +132,20 @@ document.addEventListener('keydown', (event) => {
             percent.disabled = false;
         }
     } else if (key === 'Backspace') { /* Remove the last character */
-        displayInput.textContent = displayInput.textContent.slice(0, -1);
+        if (currentOperand.slice(-1) == '.') { /* Add this to reactivate the dot button after it being deleted */
+            dot.disabled = false;
+        } else if (currentOperand.slice(-1) == '%') { /* Add this to reactivate the percent button after it being deleted */
+            percent.disabled = false;
+        }
+        displayInput.textContent = displayInput.textContent.slice(0, -1); /* This has to be after the conditionals
+        because slice(-1) won't equal either dot or percent if had already been deleted */
         currentOperand = currentOperand.slice(0, -1);
     } else if (key === 'Escape') { /* Clear all character */
         displayInput.textContent = ''
         , currentOperand = ''
         , previousOperand = '';
+        dot.disabled = false;
+        percent.disabled = false;
     }
 })
 
